@@ -22,7 +22,7 @@ const getByFilter = (filter) => {
 };
 
 const create = async (account) => {
-  const id = await db("accounts").insert(account);
+  const [id] = await db("accounts").insert(account);
   return await getById(id);
 };
 
