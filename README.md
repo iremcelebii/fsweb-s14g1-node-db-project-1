@@ -27,7 +27,6 @@ Chrome'u kullanarak [W3Schools.com'da SQL Try Editor'ı](https://www.w3schools.c
 
 **Sayfadaki 'Veritabanını Geri Yükle' düğmesini tıklayınca veritabanını orijinal verilerle yeniden dolduracak ve yaptığınız tüm değişiklikleri iptal edecektir**.
 
-
 ### 2.2 Accounts Resource için bir RESTful API oluşturun
 
 `budget.db3` veritabanının "accounts" tablosunda bazı kayıtlar sağladık. Aşağıdaki komutu çalıştırarak veritabanını (veritabanını sildikten sonra bile) geri yükleyebilirsiniz:
@@ -44,7 +43,6 @@ npm run resetdb
 | name   | string           | required, unique                                    |
 | budget | numeric          | required                                            |
 
-
 #### Model Functions'ları Yaz
 
 - Aşağıdaki db erişim fonksiyonlarını Knex kullanarak `api/accounts/accounts-model.js` içine yazın:
@@ -57,24 +55,24 @@ npm run resetdb
 
 - İşte Knex ile SQLite ile çalışmak için bazı kopyalar :):
 
+```js
+db("foo-table"); // returns a promise that resolves to an **array** with all records in the table
+db("foo-table").where({ role: "Student", active: true }); // resolves to an **array** of all records that satisfy the where
+db("foo-table").where("name", "Mary"); // is an alternative for when there is just one where condition
+db("foo-table").where("id", 7).first(); // will resolve to the **record** we want (if the id is unique for a table) or undefined
+db("foo-table").insert({ bar: "baz" }); // resolves to an **array** containing the **ids of the records** inserted into the table
+db("foo-table").where("id", id).update({ bar: "new bar" }); // resolves to the **number of records** affected by the update
+db("foo-table").where("id", id).delete(); // resolves to the **number of records** affected by the delete
+```
 
 ```js
-db('foo-table') // returns a promise that resolves to an **array** with all records in the table
-db('foo-table').where({ role: 'Student', active: true }) // resolves to an **array** of all records that satisfy the where
-db('foo-table').where('name', 'Mary') // is an alternative for when there is just one where condition
-db('foo-table').where('id', 7).first() // will resolve to the **record** we want (if the id is unique for a table) or undefined
-db('foo-table').insert({ bar: 'baz' }) // resolves to an **array** containing the **ids of the records** inserted into the table
-db('foo-table').where('id', id).update({ bar: 'new bar' }) // resolves to the **number of records** affected by the update
-db('foo-table').where('id', id).delete() // resolves to the **number of records** affected by the delete
-```
-```js
-db('foo-table') // tablodaki tüm kayıtları **array** olarak içeren bir promise döndürür
-db('foo-table').where({ role: 'Student', active: true }) // where'i sorgusunu karşılayan tüm kayıtları bir **array** olarak döner
-db('foo-table').where('name', 'Mary') // sadece bir tane where koşulu olduğunda bir alternatiftir
-db('foo-table').where('id', 7).first() // istediğimiz **record**u (bir tablo için id unique ise) veya undefined döner
-db('foo-table').insert({ bar: 'baz' }) // tabloya eklenen **kayıtların id'lerini** içeren bir **array** döner
-db('foo-table').where('id', id).update({ bar: 'new bar' }) // güncelleme ile etkilenen **kayıt sayısını** döner
-db('foo-table').where('id', id).delete() // silme işleminden etkilenen **kayıt sayısını** döner
+db("foo-table"); // tablodaki tüm kayıtları **array** olarak içeren bir promise döndürür
+db("foo-table").where({ role: "Student", active: true }); // where'i sorgusunu karşılayan tüm kayıtları bir **array** olarak döner
+db("foo-table").where("name", "Mary"); // sadece bir tane where koşulu olduğunda bir alternatiftir
+db("foo-table").where("id", 7).first(); // istediğimiz **record**u (bir tablo için id unique ise) veya undefined döner
+db("foo-table").insert({ bar: "baz" }); // tabloya eklenen **kayıtların id'lerini** içeren bir **array** döner
+db("foo-table").where("id", id).update({ bar: "new bar" }); // güncelleme ile etkilenen **kayıt sayısını** döner
+db("foo-table").where("id", id).delete(); // silme işleminden etkilenen **kayıt sayısını** döner
 ```
 
 #### Middleware'ı Yaz
@@ -84,14 +82,13 @@ db('foo-table').where('id', id).delete() // silme işleminden etkilenen **kayıt
   - `checkAccountPayload`, `req.body` geçersizse, 400 durumunu döndürür:
 
     - Ad veya bütçe tanımlanmamışsa, `{ message: "name and budget are required" }` döndürün
-    - _trimmed_name 3'ten kısa veya 100'den uzunsa, `{ message: "name of account must be between 3 and 100" }` döndürün
+    - \_trimmed_name 3'ten kısa veya 100'den uzunsa, `{ message: "name of account must be between 3 and 100" }` döndürün
     - Bütçe bir sayıya dönüştürülemiyorsa, `{ message: "budget of account must be a number" }` döndürün
     - Bütçe negatif bir sayıysa veya bir milyonun üzerindeyse, `{ message: "budget of account is too large or too small" }` döndürün
 
   - `checkAccountId`, veritabanında `req.params.id` yoksa `{ message: "account not found" }` ile bir durum 404 döndürün
 
   - _trimmed_ `req.body.name` zaten veritabanında mevcutsa, `checkAccountNameUnique`, `{ message: "that name is taken" }` ile bir durum 400 döndürün
-
 
 ### Accounts API'yi yaz
 
@@ -106,7 +103,6 @@ db('foo-table').where('id', id).delete() // silme işleminden etkilenen **kayıt
 - Beklendiği gibi çalıştıklarını kontrol etmek için uç noktalarınızı "Insomnia" veya "Postman" gibi bir REST istemcisiyle manuel olarak test edin.
 - `npm test`ini çalıştırarak uç noktalarınızı otomatik olarak test edin.
 
-
 #### Önemli notlar
 
 - Ek dosyalar oluşturabilirsiniz ancak **mevcut dosyaları veya klasörleri taşımayın veya yeniden adlandırmayın**.
@@ -114,7 +110,6 @@ db('foo-table').where('id', id).delete() // silme işleminden etkilenen **kayıt
 - Çözümünüzde en iyi uygulamaları takip etmeniz, temiz ve profesyonel sonuçlar üretmeniz esastır.
 - Çalışmanızı gözden geçirmek, iyileştirmek ve değerlendirmek için zamanınızı ayırın.
 - Çalışmanızda yazım denetimi ve dilbilgisi denetimi de dahil olmak üzere temel profesyonel yaklaşımları da gerçekleştirin.
-
 
 ### Görev 3: Zorlayıcı Görevler
 
@@ -125,7 +120,6 @@ Aşağıdaki alıştırmalar **araştırma gerektirir**, bunları tamamlamak iç
   - Müşteriler tablosunda kaç farklı şehrin saklandığını keşfetmek için bir sorgu bulun. Tekrarlar çift sayılmamalıdır. 69 olmalı
   - 20 karakterden uzun adları olan tüm tedarikçileri bulun. 11 kayıt döndürür.
   - `GET /api/accounts` uç noktasına bir `query string` seçeneği ekleyin. `query string`, `limit`, `sortby` ve `sortdir` anahtarlarını içerebilir. Bu anahtarlar sağlanmışsa, veritabanından seçilen "hesapları" sınırlamak ve sıralamak için bu değerleri kullanın. Sıralama ve sınırlama için [knexjs.org](http://knexjs.org/) içindeki belgelere başvurun.
-
 
   ```js
   // örnek req.query nesnesi
